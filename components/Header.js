@@ -26,7 +26,7 @@ function Header() {
 	}, []);
 
 	const handleRegister = () => {
-		fetch("https://news-app-backend-green.vercel.app/users/signup", {
+		fetch("http://localhost:3000/users/signup", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username: signUpUsername, password: signUpPassword }),
@@ -43,7 +43,7 @@ function Header() {
 	};
 
 	const handleConnection = () => {
-		fetch("https://news-app-backend-green.vercel.app/users/signin", {
+		fetch("http://localhost:3000/users/signin", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username: signInUsername, password: signInPassword }),
@@ -125,12 +125,12 @@ function Header() {
 			<div className={styles.logoutSection}>
 				<p>Welcome {user.username} / </p>
 				<button onClick={() => handleLogout()}>Logout</button>
-				<FontAwesomeIcon
+				{/* <FontAwesomeIcon
 					onClick={() => handleEmptyHide()}
 					icon={faEyeSlash}
 					style={iconStyleH}
 					className={styles.bookmarkIcon}
-				/>
+				/> */}
 			</div>
 		);
 	} else {
@@ -138,24 +138,24 @@ function Header() {
 			userSection = (
 				<div className={styles.headerIcons}>
 					<FontAwesomeIcon onClick={showModal} className={styles.userSection} icon={faXmark} />
-					<FontAwesomeIcon
+					{/* <FontAwesomeIcon
 						onClick={() => handleEmptyHide()}
 						icon={faEyeSlash}
 						style={iconStyleH}
 						className={styles.bookmarkIcon}
-					/>
+					/> */}
 				</div>
 			);
 		} else {
 			userSection = (
 				<div className={styles.headerIcons}>
 					<FontAwesomeIcon onClick={showModal} className={styles.userSection} icon={faUser} />
-					<FontAwesomeIcon
+					{/* <FontAwesomeIcon
 						onClick={() => handleEmptyHide()}
 						icon={faEyeSlash}
 						style={iconStyleH}
 						className={styles.bookmarkIcon}
-					/>
+					/> */}
 				</div>
 			);
 		}
@@ -192,12 +192,12 @@ function Header() {
 						/>
 					</span>
 				</Link> */}
-				{/* <FontAwesomeIcon
+				<FontAwesomeIcon
 					onClick={() => handleEmptyHide()}
 					icon={faEyeSlash}
 					style={iconStyleH}
 					className={styles.bookmarkIcon}
-				/> */}
+				/>
 			</div>
 
 			{isModalVisible && (

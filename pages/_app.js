@@ -27,7 +27,7 @@ const store = configureStore({
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 });
 
-// Transformez votre store pour qu’il soit persistant
+// Transformez votre store pour qu’il soit persistant :
 const persistor = persistStore(store);
 
 function App({ Component, pageProps }) {
