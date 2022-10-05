@@ -1,27 +1,46 @@
+import { useDispatch, useSelector, useState } from "react-redux";
+import { addBookmark, removeBookmark } from "../reducers/bookmarks";
+import { addHiddenArticle, removeHiddenArticles } from "../reducers/hiddenArticles";
+
 import Image from "next/image";
 import styles from "../styles/Article.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark } from "@fortawesome/free-solid-svg-icons";
-
-import { useDispatch } from "react-redux";
-import { removeBookmark, addBookmark } from "../reducers/bookmarks";
+import { faBookmark, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function Article(props) {
 	const dispatch = useDispatch();
+	const user = useSelector((state) => state.user.value);
+
+	const hiddenArticle = useSelector((state) => state.hiddenArticle.value);
 
 	const handleBookmarkClick = () => {
-		if (props.isBookmarked) {
-			dispatch(removeBookmark(props));
-		} else {
-			dispatch(addBookmark(props));
+		if (!user.token) {
+			return;
 		}
+
+		fetch(`http://localhost:3000/users/canBookmark/${user.token}`)
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.result && data.canBookmark) {
+					if (props.isBookmarked) {
+						dispatch(removeBookmark(props));
+					} else {
+						dispatch(addBookmark(props));
+					}
+				}
+			});
 	};
 
+	const handleHiddenArticleClick = () => {
+		dispatch(addHiddenArticle(props.title));
+		// console.log(hiddenArticle);
+	};
+	let iconStyleH = {};
 	let iconStyle = {};
-
 	if (props.isBookmarked) {
-		iconStyle = { color: "#e74c3c", cursor: "pointer" };
+		iconStyle = { color: "#E9BE59" };
 	}
+
 	return (
 		<div className={styles.articles}>
 			<div className={styles.articleHeader}>
@@ -29,8 +48,14 @@ function Article(props) {
 				<FontAwesomeIcon
 					onClick={() => handleBookmarkClick()}
 					icon={faBookmark}
-					className={styles.bookmarkIcon}
 					style={iconStyle}
+					className={styles.bookmarkIcon}
+				/>
+				<FontAwesomeIcon
+					onClick={() => handleHiddenArticleClick()}
+					icon={faEyeSlash}
+					style={iconStyleH}
+					className={styles.bookmarkIcon}
 				/>
 			</div>
 			<h4 style={{ textAlign: "right" }}>- {props.author}</h4>

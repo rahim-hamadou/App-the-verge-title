@@ -6,22 +6,20 @@ const initialState = {
 
 export const bookmarksSlice = createSlice({
 	name: "bookmarks",
-
 	initialState,
 	reducers: {
 		addBookmark: (state, action) => {
-			console.log("add", action.payload.title);
-			// on ajoute l'el au tableau bookmarks
 			state.value.push(action.payload);
-			// state.isBookmarked = true;
+			console.log(state);
 		},
 		removeBookmark: (state, action) => {
-			console.log("remove", action.payload.title);
-			// on creer un new tableau sans l'element avec le titre sur lequel on a clique
 			state.value = state.value.filter((bookmark) => bookmark.title !== action.payload.title);
+		},
+		removeAllBookmark: (state) => {
+			state.value = [];
 		},
 	},
 });
 
-export const { addBookmark, removeBookmark } = bookmarksSlice.actions;
+export const { addBookmark, removeBookmark, removeAllBookmark } = bookmarksSlice.actions;
 export default bookmarksSlice.reducer;

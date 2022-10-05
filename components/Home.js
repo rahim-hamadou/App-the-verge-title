@@ -1,40 +1,46 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Head from "next/head";
 import Article from "./Article";
 import TopArticle from "./TopArticle";
 import styles from "../styles/Home.module.css";
-import { useSelector } from "react-redux";
 
 function Home() {
-	// on definie un arr contenant les bookmarks du store
 	const bookmarks = useSelector((state) => state.bookmarks.value);
+	const hiddenArticle = useSelector((state) => state.hiddenArticle.value);
+
 	const [articlesData, setArticlesData] = useState([]);
 	const [topArticle, setTopArticle] = useState({});
 
 	useEffect(() => {
-		fetch("https://news-app-backend-green.vercel.app/articles")
+		fetch("http://localhost:3000/articles")
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				setTopArticle(data.articles[0]);
-				// on affiche les els du data avec l'index de boucle superieur a 0 donc le deuxieme el
 				setArticlesData(data.articles.filter((data, i) => i > 0));
 			});
 	}, []);
 
-	const articles = articlesData.map((data, i) => {
-		// on defini si l'el est deja save dans bookmark
-		const isBookmarked = bookmarks.some((bookmarks) => bookmarks.title === data.title);
+	//   const hiddenArticleList = [];
+	// 	for (let i = 0; i < articlesData.length; i++) {
+	// articlesData[i].title
 
-		// a chaque tour de boucle du l"arr on rempli les champs attendu dans articles.js avec els data recu de [articleData]"
+	//   }
+
+	const hiddenArticleList = articlesData.filter((data) => !hiddenArticle.includes(data.title));
+	console.log(hiddenArticle);
+
+	const articles = hiddenArticleList.map((data, i) => {
+		const isBookmarked = bookmarks.some((bookmark) => bookmark.title === data.title);
+
 		return <Article key={i} {...data} isBookmarked={isBookmarked} />;
 	});
 
-	let topArticleCard;
-	if (bookmarks.some((bookmarks) => bookmarks.title === topArticle.title)) {
-		topArticleCard = <TopArticle {...topArticle} isBookmarked />;
+	let topArticles;
+	if (bookmarks.some((bookmark) => bookmark.title === topArticle.title)) {
+		topArticles = <TopArticle {...topArticle} isBookmarked={true} />;
 	} else {
-		topArticleCard = <TopArticle {...topArticle} isBookmarked={false} />;
+		topArticles = <TopArticle {...topArticle} isBookmarked={false} />;
 	}
 
 	return (
@@ -42,9 +48,7 @@ function Home() {
 			<Head>
 				<title>Morning News - Home</title>
 			</Head>
-
-			{topArticleCard}
-
+			{topArticles}
 			<div className={styles.articlesContainer}>{articles}</div>
 		</div>
 	);
