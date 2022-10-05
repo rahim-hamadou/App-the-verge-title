@@ -21,12 +21,15 @@ function Header() {
 	const [signInUsername, setSignInUsername] = useState("");
 	const [signInPassword, setSignInPassword] = useState("");
 
+	let iconStyleH = {};
+	iconStyleH = { color: "#8c6879", cursor: "pointer", title: "Show Contain" };
+
 	useEffect(() => {
 		setDate(new Date());
 	}, []);
 
 	const handleRegister = () => {
-		fetch("http://localhost:3000/users/signup", {
+		fetch("https://news-app-backend-green.vercel.app/users/signup", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username: signUpUsername, password: signUpPassword }),
@@ -43,7 +46,7 @@ function Header() {
 	};
 
 	const handleConnection = () => {
-		fetch("http://localhost:3000/users/signin", {
+		fetch("https://news-app-backend-green.vercel.app/users/signin", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ username: signInUsername, password: signInPassword }),
@@ -116,21 +119,20 @@ function Header() {
 		);
 	}
 
-	let iconStyleH = {};
-	iconStyleH = { color: "#8c6879", cursor: "pointer", title: "Show Contain" };
-
 	let userSection;
 	if (user.token) {
 		userSection = (
 			<div className={styles.logoutSection}>
 				<p>Welcome {user.username} / </p>
 				<button onClick={() => handleLogout()}>Logout</button>
-				{/* <FontAwesomeIcon
-					onClick={() => handleEmptyHide()}
-					icon={faEyeSlash}
-					style={iconStyleH}
-					className={styles.bookmarkIcon}
-				/> */}
+
+				<FontAwesomeIcon
+					onClick={() => {
+						dispatch(removeHiddenArticle());
+					}}
+					className={styles.unhideIcon}
+					icon={faEye}
+				/>
 			</div>
 		);
 	} else {
@@ -138,29 +140,30 @@ function Header() {
 			userSection = (
 				<div className={styles.headerIcons}>
 					<FontAwesomeIcon onClick={showModal} className={styles.userSection} icon={faXmark} />
-					{/* <FontAwesomeIcon
-						onClick={() => handleEmptyHide()}
-						icon={faEyeSlash}
-						style={iconStyleH}
-						className={styles.bookmarkIcon}
-					/> */}
+					<FontAwesomeIcon
+						onClick={() => {
+							dispatch(removeHiddenArticle());
+						}}
+						className={styles.unhideIcon}
+						icon={faEye}
+					/>
 				</div>
 			);
 		} else {
 			userSection = (
 				<div className={styles.headerIcons}>
 					<FontAwesomeIcon onClick={showModal} className={styles.userSection} icon={faUser} />
-					{/* <FontAwesomeIcon
-						onClick={() => handleEmptyHide()}
-						icon={faEyeSlash}
-						style={iconStyleH}
-						className={styles.bookmarkIcon}
-					/> */}
+					<FontAwesomeIcon
+						onClick={() => {
+							dispatch(removeHiddenArticle());
+						}}
+						className={styles.unhideIcon}
+						icon={faEye}
+					/>
 				</div>
 			);
 		}
 	}
-
 	const handleEmptyHide = () => {
 		dispatch(removeHiddenArticle());
 		// console.log(hiddenArticle);

@@ -13,19 +13,13 @@ function Home() {
 	const [topArticle, setTopArticle] = useState({});
 
 	useEffect(() => {
-		fetch("http://localhost:3000/articles")
+		fetch("https://news-app-backend-green.vercel.app/users/articles")
 			.then((response) => response.json())
 			.then((data) => {
 				setTopArticle(data.articles[0]);
 				setArticlesData(data.articles.filter((data, i) => i > 0));
 			});
 	}, []);
-
-	//   const hiddenArticleList = [];
-	// 	for (let i = 0; i < articlesData.length; i++) {
-	// articlesData[i].title
-
-	//   }
 
 	const hiddenArticleList = articlesData.filter((data) => !hiddenArticle.includes(data.title));
 	console.log(hiddenArticle);

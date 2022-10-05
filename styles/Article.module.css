@@ -25,3 +25,10 @@
 .bookmarkIcon:hover {
 	opacity: 0.6;
 }
+
+.hideIcon {
+	cursor: pointer;
+}
+.hideIcon:hover {
+	opacity: 0.6;
+}

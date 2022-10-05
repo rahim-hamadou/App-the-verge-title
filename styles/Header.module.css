@@ -94,3 +94,9 @@
 	justify-content: space-around;
 	width: 12vw;
 }
+.unhideIcon {
+	cursor: pointer;
+}
+.unhideIcon:hover {
+	opacity: 0.6;
+}
